@@ -1,0 +1,79 @@
+name: Update formula
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package / formula name'
+        required: true
+        type: string
+      version:
+        description: 'Package version'
+        required: true
+        type: string
+
+  workflow_call:
+    inputs:
+      package:
+        description: 'Package / formula name'
+        required: true
+        type: string
+      version:
+        description: 'Package version'
+        required: true
+        type: string
+
+jobs:
+  test-updated-formula:
+    name: Test updated formula
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Update package in formula
+      run: ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }}
+
+    - name: Set up Homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+
+    - name: Test updated formula
+      run: |
+        set -o errexit
+        export HOMEBREW_NO_AUTO_UPDATE=1
+        export HOMEBREW_NO_ANALYTICS=1
+        export HOMEBREW_NO_INSTALL_CLEANUP=1
+
+        # Install the updated formula
+        # (due to setup-homebrew magic, the working directory is also considered as a tap, so no need to copy around the updated formula file)
+        brew install $GITHUB_REPOSITORY/${{ github.event.inputs.package }}
+
+        # Run the formula tests
+        brew test ${{ github.event.inputs.package }}
+
+  update-formula:
+    name: Update formula and commit result
+    needs: [test-updated-formula]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Update package version and commit result
+      run: |
+        set -o errexit
+
+        ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }}
+
+        git config user.name 'GitHub Actions'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git add Formula/${{ github.event.inputs.package }}.rb
+        git commit -m "Updating \`${{ github.event.inputs.package }}\` to version \`${{ github.event.inputs.version }}\`"
+        git push
