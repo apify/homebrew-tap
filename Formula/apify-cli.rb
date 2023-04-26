@@ -3,8 +3,8 @@ require "language/node"
 class ApifyCli < Formula
   desc "Apify command-line interface"
   homepage "https://docs.apify.com/cli"
-  url "https://registry.npmjs.org/apify-cli/-/apify-cli-0.15.1.tgz"
-  sha256 "ae6e89f81fab3396161b24bff1e68c6a04825432b470635db6939c98b918d465"
+  url "https://registry.npmjs.org/apify-cli/-/apify-cli-0.16.0.tgz"
+  sha256 "b61a6059b9f0e13f6780ecf04b365efcc064ecd46341f663581b2a990b37f040"
   license "Apache-2.0"
 
   depends_on "node@16"
