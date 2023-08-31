@@ -9,10 +9,10 @@ class ApifyCli < Formula
   sha256 "ee638e7cae1947034602e656031b47e3a2ba1ab70e033097ab72ce9e9d911f1b"
   license "Apache-2.0"
 
-  depends_on "node"
-
   # TODO: move to `disable!` in about a year
   deprecate! date: "2023-08-30", because: "was moved to homebrew-core, use `brew install apify-cli` instead"
+
+  depends_on "node"
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
@@ -24,6 +24,20 @@ class ApifyCli < Formula
     # but the CLI is running them with another Node.js version.
     rewrite_shebang detected_node_shebang, libexec/"lib/node_modules/apify-cli/src/bin/run"
     bin.install_symlink Dir["#{libexec}/bin/*"]
+  end
+
+  def caveats
+    <<~EOS
+      The `apify-cli` formula was moved to homebrew-core,
+      and eventually it will stop being maintained in `apify/tap/apify-cli`.
+      To reinstall the formula from homebrew-core, run
+      ```
+      brew uninstall apify-cli
+      brew untap apify/tap
+      brew update
+      brew install apify-cli
+      ```
+    EOS
   end
 
   test do
