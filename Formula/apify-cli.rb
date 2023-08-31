@@ -5,8 +5,8 @@ class ApifyCli < Formula
 
   desc "Apify command-line interface"
   homepage "https://docs.apify.com/cli"
-  url "https://registry.npmjs.org/apify-cli/-/apify-cli-0.18.0.tgz"
-  sha256 "28d4e8b032992560a4f842a44e8d107693b1a031560325b90967245c4ed7b628"
+  url "https://registry.npmjs.org/apify-cli/-/apify-cli-0.18.1.tgz"
+  sha256 "ee638e7cae1947034602e656031b47e3a2ba1ab70e033097ab72ce9e9d911f1b"
   license "Apache-2.0"
 
   depends_on "node"
