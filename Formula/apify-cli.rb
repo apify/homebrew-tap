@@ -44,7 +44,7 @@ class ApifyCli < Formula
     # Test that the Apify CLI is at all installed and working
     assert_match "apify-cli/#{version}", shell_output("#{bin}/apify --version")
     # Test that the CLI can initialize a new actor
-    system "#{bin}/apify", "init", "testing-actor"
+    system "#{bin}/apify", "init", "-y", "testing-actor"
     assert_predicate testpath/".actor/actor.json", :exist?
   end
 end
