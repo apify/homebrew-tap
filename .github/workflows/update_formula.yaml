@@ -48,6 +48,10 @@ jobs:
         export HOMEBREW_NO_ANALYTICS=1
         export HOMEBREW_NO_INSTALL_CLEANUP=1
 
+        # Disable formula migrations for this test,
+        # otherwise `brew install` would install the formula from homebrew-core instead of the local repository clone
+        rm ./tap_migrations.json
+
         # Install the updated formula
         # (due to setup-homebrew magic, the working directory is also considered as a tap, so no need to copy around the updated formula file)
         brew install $GITHUB_REPOSITORY/${{ github.event.inputs.package }}
@@ -75,5 +79,8 @@ jobs:
         git config user.name 'GitHub Actions'
         git config user.email 'github-actions[bot]@users.noreply.github.com'
         git add Formula/${{ github.event.inputs.package }}.rb
+        git checkout -b feat/update-${{ github.event.inputs.package }}-to-${{ github.event.inputs.version }}
         git commit -m "Updating \`${{ github.event.inputs.package }}\` to version \`${{ github.event.inputs.version }}\`"
         git push
+        gh pr create --fill
+        gh pr merge --auto --squash --delete-branch
