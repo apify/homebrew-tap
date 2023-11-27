@@ -78,8 +78,8 @@ jobs:
 
         ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }}
 
-        git config user.name 'GitHub Actions'
-        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git config user.name 'Apify Service Account'
+        git config user.email '64261774+apify-service-account@users.noreply.github.com'
 
         git checkout -b feat/update-${{ github.event.inputs.package }}-to-${{ github.event.inputs.version }}
         git add Formula/${{ github.event.inputs.package }}.rb
