@@ -36,3 +36,5 @@ SHA256=$(curl -sf "${TARBALL_URL}" | sha256sum | cut -d " " -f 1)
 sed -i.bak -e "s@  url .*@  url \"${TARBALL_URL}\"@" "${PACKAGE_NAME}.rb"
 sed -i.bak -e "s@  sha256 .*@  sha256 \"${SHA256}\"@" "${PACKAGE_NAME}.rb"
 rm -rf "${PACKAGE_NAME}.rb.bak"
+
+cat "${PACKAGE_NAME}.rb"
