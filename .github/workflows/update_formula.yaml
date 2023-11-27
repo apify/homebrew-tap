@@ -81,6 +81,6 @@ jobs:
         git add Formula/${{ github.event.inputs.package }}.rb
         git checkout -b feat/update-${{ github.event.inputs.package }}-to-${{ github.event.inputs.version }}
         git commit -m "Updating \`${{ github.event.inputs.package }}\` to version \`${{ github.event.inputs.version }}\`"
-        git push --set-upstream origin
+        git push --set-upstream origin feat/update-${{ github.event.inputs.package }}-to-${{ github.event.inputs.version }}
         gh pr create --fill
         gh pr merge --auto --squash --delete-branch
