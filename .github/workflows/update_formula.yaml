@@ -52,8 +52,6 @@ jobs:
         # otherwise `brew install` would install the formula from homebrew-core instead of the local repository clone
         rm ./tap_migrations.json
 
-        cat Formula/${{ github.event.inputs.package }}.rb
-
         # Install the updated formula
         # (due to setup-homebrew magic, the working directory is also considered as a tap, so no need to copy around the updated formula file)
         brew install $GITHUB_REPOSITORY/${{ github.event.inputs.package }}
@@ -83,6 +81,6 @@ jobs:
         git add Formula/${{ github.event.inputs.package }}.rb
         git checkout -b feat/update-${{ github.event.inputs.package }}-to-${{ github.event.inputs.version }}
         git commit -m "Updating \`${{ github.event.inputs.package }}\` to version \`${{ github.event.inputs.version }}\`"
-        git push
+        git push --set-upstream origin
         gh pr create --fill
         gh pr merge --auto --squash --delete-branch
