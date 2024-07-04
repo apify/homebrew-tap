@@ -22,7 +22,7 @@ class ApifyCli < Formula
     # which might be a different version than the one installed by Homebrew,
     # causing issues that `node_modules` were installed with one Node.js version
     # but the CLI is running them with another Node.js version.
-    rewrite_shebang detected_node_shebang, libexec/"lib/node_modules/apify-cli/src/bin/run"
+    rewrite_shebang detected_node_shebang, libexec/"lib/node_modules/apify-cli/src/bin/run.js"
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
