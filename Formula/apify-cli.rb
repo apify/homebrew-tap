@@ -5,8 +5,8 @@ class ApifyCli < Formula
 
   desc "Apify command-line interface"
   homepage "https://docs.apify.com/cli"
-  url "https://registry.npmjs.org/apify-cli/-/apify-cli-1.5.0.tgz"
-  sha256 "015eb6f27ac19cfb1a8f8032fff95d2f0c48b845c836fffcddea2b5747a8ac9e"
+  url "https://registry.npmjs.org/apify-cli/-/apify-cli-1.6.0.tgz"
+  sha256 "c8d51b73a9208a3edf1c72c9100c867cdea8b05e7fb49bcdf92819a3e0c2b7ad"
   license "Apache-2.0"
 
   # TODO: move to `disable!` in about a year
