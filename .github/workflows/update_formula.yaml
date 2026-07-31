@@ -11,6 +11,10 @@ on:
         description: 'Package version'
         required: true
         type: string
+      npm_package:
+        description: 'NPM package name, when it differs from the formula name (e.g. @apify/mcpc)'
+        required: false
+        type: string
 
   workflow_call:
     inputs:
@@ -21,6 +25,10 @@ on:
       version:
         description: 'Package version'
         required: true
+        type: string
+      npm_package:
+        description: 'NPM package name, when it differs from the formula name (e.g. @apify/mcpc)'
+        required: false
         type: string
 
 jobs:
@@ -39,7 +47,7 @@ jobs:
       uses: Homebrew/actions/setup-homebrew@master
 
     - name: Update package in formula
-      run: ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }}
+      run: ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }} ${{ github.event.inputs.npm_package }}
 
     - name: Test updated formula
       run: |
@@ -76,7 +84,7 @@ jobs:
       run: |
         set -o errexit
 
-        ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }}
+        ./.github/scripts/update_formula.sh ${{ github.event.inputs.package }} ${{ github.event.inputs.version }} ${{ github.event.inputs.npm_package }}
 
         git config user.name 'Apify Service Account'
         git config user.email '64261774+apify-service-account@users.noreply.github.com'
