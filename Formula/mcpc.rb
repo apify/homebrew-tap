@@ -11,20 +11,16 @@ class Mcpc < Formula
 
   depends_on "node"
 
-  on_linux do
-    # @napi-rs/keyring reaches the OS keychain through the Secret Service API.
-    # Without libsecret, mcpc falls back to ~/.mcpc/credentials.json (mode 0600).
-    depends_on "libsecret"
-  end
-
   def install
     system "npm", "install", *std_npm_args
-    # Both executables ship "#!/usr/bin/env node", so a node earlier in PATH
+    # The package's executables ship "#!/usr/bin/env node", so a node earlier in PATH
     # (nvm, asdf, system) would run mcpc against node_modules installed for
     # Homebrew's node — and possibly under a runtime older than the required
     # >= 22.12. Point them at Homebrew's node instead.
     rewrite_shebang detected_node_shebang, *libexec.glob("lib/node_modules/@apify/mcpc/bin/*")
-    bin.install_symlink libexec.glob("bin/*")
+    # Only mcpc goes on PATH: it starts its bridge as `node dist/bridge/index.js`
+    # and never runs mcpc-bridge by name.
+    bin.install_symlink libexec/"bin/mcpc"
   end
 
   test do
@@ -48,6 +44,6 @@ class Mcpc < Formula
     # revision bump.
     keyring = libexec.glob("lib/node_modules/**/@napi-rs/keyring").first
     refute_nil keyring, "@napi-rs/keyring is missing from the install"
-    system Formula["node"].opt_bin/"node", "-e", "require(#{keyring.to_s.inspect})"
+    system formula_opt_bin("node")/"node", "-e", "require(#{keyring.to_s.inspect})"
   end
 end
