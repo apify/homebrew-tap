@@ -71,6 +71,7 @@ jobs:
     name: Update formula and commit result
     needs: [test-updated-formula]
     runs-on: ubuntu-latest
+    environment: automation
     permissions:
       contents: write
 
